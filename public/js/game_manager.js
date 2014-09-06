@@ -46,7 +46,10 @@ GameManager.prototype.setup = function () {
   // Update the actuator
   this.actuate();
 
-  this.io.emit('startState', this.grid.serialize());
+  // Wait a second before sending start state
+  setTimeout(function () {
+    this.io.emit('startState', this.grid.serialize());
+  }.bind(this), 1000);
 
   this.io.on('attack', function () {
     console.log('attack');

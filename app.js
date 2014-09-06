@@ -65,6 +65,7 @@ io.sockets.on('connection', function (socket) {
 });
 
 function startGame() {
+  console.log('starting game');
   sockets.forEach(function (socket) {
     var opponent = sockets.filter(function (s) { return s.id != socket.id })[0];
     opponent.emit('startState', socket.startState);
