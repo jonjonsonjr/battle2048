@@ -1,3 +1,2 @@
-.sass-cache/
-server/node_modules
-logs/
+.gitignore
+node_modules

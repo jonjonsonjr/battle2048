@@ -1,42 +1,16 @@
 {
-  "name": "multi-2048",
+  "name": "battle2048",
   "version": "0.0.1",
-  "author": "Emil Stolarsky",
-  "description": "2048 the game - multiplayer version",
-  "contributors": [
-    {
-      "name": "Emil Stolarsky",
-      "email": "emil.stolarsky@gmail.com"
-    }
-  ],
+  "private": true,
   "scripts": {
-    "start": "node server/app"
+    "start": "node app.js"
   },
-  "main": "./lib/http-server",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nodejitsu/http-server.git"
-  },
-  "keywords": [
-    "cli",
-    "http",
-    "server"
-  ],
   "dependencies": {
-    "async": "*",
-    "engine.io": "~1.0.4",
-    "lodash": "~2.4.1",
-    "node-uuid": "~1.4.1",
-    "primus": "*",
-    "rbytes": "*",
-    "redis": "^0.12.1",
-    "sockjs": "~0.3.8",
-    "websocket-multiplex": "~0.1.0",
-    "winston": "~0.7.2",
-    "ws": "*"
+    "express": "3.3.5",
+    "socket.io": "^1.1.0"
   },
-  "license": "MIT",
   "engines": {
-    "node": ">=0.9"
+    "node": "0.10.x",
+    "npm": "1.2.x"
   }
 }
