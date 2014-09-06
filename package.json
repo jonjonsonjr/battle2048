@@ -10,7 +10,7 @@
     }
   ],
   "scripts": {
-    "start": "node app"
+    "start": "node server/app"
   },
   "main": "./lib/http-server",
   "repository": {

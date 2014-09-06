@@ -6,14 +6,22 @@ var http = require('http'),
     uuid = require('node-uuid'),
     sockjs = require('sockjs'),
     GameLobby = require('./GameLobby'),
-    redis = require("redis"),
-    client = redis.createClient(),
     gamersHashMap = {},
     gamesBeingPlayed = 0,
     gameStats = JSON.stringify({numPlayers: 0, numGames: 0}),
     channelHashMap = {},
     channelId,
     startLocations;
+
+if (process.env.REDISTOGO_URL) {
+  // TODO: redistogo connection
+  var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+  var client = require("redis").createClient(rtg.port, rtg.hostname);
+
+  client.auth(rtg.auth.split(":")[1]);
+} else {
+  var client = require("redis").createClient();
+}
 
 var CROSS_ORIGIN_HEADERS = {};
 CROSS_ORIGIN_HEADERS['Content-Type'] = 'text/plain';
