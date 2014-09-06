@@ -10,7 +10,8 @@ app.use(express.compress());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: 1000*60*60*24*14 }));
+//app.use(express.static(path.join(__dirname, 'public'), { maxAge: 1000*60*60*24*14 }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 var server = http.createServer(app).listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
