@@ -19,9 +19,10 @@ function OnlineGameManager(size, Actuator, StorageManager, io) {
   }.bind(this));
 
   io.on('attacked', function (tile) {
-   console.log('attacked');
-   this.grid.insertTile(new Tile(tile.position, tile.value));
-   this.actuate();
+    console.log('attacked');
+    this.prepareTiles();
+    this.grid.insertTile(new Tile(tile.position, tile.value));
+    this.actuate();
   }.bind(this));
 }
 

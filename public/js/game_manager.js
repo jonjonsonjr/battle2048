@@ -53,6 +53,7 @@ GameManager.prototype.setup = function () {
 
   this.io.on('attack', function () {
     console.log('attack');
+    this.prepareTiles();
     var tile = this.addRandomTile();
     this.io.emit('attacked', tile.serialize());
     this.actuate();
@@ -198,7 +199,6 @@ GameManager.prototype.move = function (direction) {
     if (mergers > 1) {
       this.io.emit('attack');
     }
-
 
     this.actuate();
   }
