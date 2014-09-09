@@ -463,5 +463,24 @@ hr {
 .game-intro {
   margin-bottom: 0; }
 
+.create-room-button {
+  position: relative;
+  margin: 0 auto;
+  cursor: pointer;
+  background: #8f7a66;
+  border-radius: 3px;
+  padding: 0 20px;
+  text-decoration: none;
+  color: #f9f6f2;
+  height: 40px;
+  line-height: 42px;
+  font-size: 18px;
+  border: none;
+  display: block;
+  text-align: center; }
+  
+.above-game {
+  text-align: center; }
+
 .game-explanation {
   margin-top: 50px; }
