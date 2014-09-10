@@ -17,8 +17,9 @@
       <h1 class="title">Battle 2048</h1></br>
     </div>
     <div class="above-game">
-      <a href="/room/0" class="restart-button">0</a>
-      <a href="/room/0" class="restart-button">0</a>
+      {{#rooms}}
+      <a href="/room/{{id}}" class="restart-button">{{id}}</a>
+      {{/rooms}}
       <br>
       <br>
       <br>

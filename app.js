@@ -3,24 +3,47 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var uuid = require('node-uuid');
-var exphbs = require('express-handlebars');
+var hogan = require('hogan-middleware');
 
 var rooms = [];
+
+for (var i = 1; i <= 10; i++) {
+  rooms.push({
+    public: true,
+    id: i.toString(),
+    sockets: []
+  });
+}
 
 // all environments
 var app = express();
 app.set('port', process.env.PORT || 3000);
-app.engine('handlebars', exphbs());
-app.set('view engine', 'handlebars');
+app.engine('mustache', hogan.__express);
 app.set('views', __dirname + '/views');
+app.set('view engine', 'mustache');
 app.use(express.compress());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/', function (req, res) {
+  var public = rooms.filter(function (r) { return r.public });
+  var sorted = public.sort(function (a, b) { return parseInt(a.id) > parseInt(b.id) });
+  var open = sorted.filter(function (r) { return r.sockets.length < 2 });
+
+  res.render('home', {
+    rooms: open
+  });
+});
+
 app.get('/room/:id', function (req, res) {
-  res.render('index.handlebars', {
+  var room = rooms.filter(function (r) { return r.id === req.params.id })[0];
+
+  if (!room) return;
+  if (room.sockets.length === 2) return;
+
+  res.render('index', {
     id: req.params.id,
     url: 'http://' + req.host
   });
@@ -30,6 +53,7 @@ app.post('/room', function (req, res) {
   // create a new room
   var id = uuid.v4();
   rooms.push({
+    public: false,
     id: id,
     sockets: []
   });
@@ -52,17 +76,15 @@ io.sockets.on('connection', function (socket) {
 
     if (!room) return;
 
-    var sockets = room.sockets;
-
     // TODO: push to spectator mode instead of just returning
-    if (sockets.length == 2) return;
+    if (room.sockets.length == 2) return;
 
     socket.on('startState', function (data) {
       console.log('startState');
       console.log(data);
       socket.startState = data;
-      if (sockets.length == 2) {
-        startGame(sockets);
+      if (room.sockets.length == 2) {
+        startGame(room.sockets);
       }
     });
 
@@ -70,14 +92,14 @@ io.sockets.on('connection', function (socket) {
       console.log('move');
       console.log(data);
       // do something
-      var opponent = sockets.filter(function (s) { return s.id !== socket.id })[0];
+      var opponent = room.sockets.filter(function (s) { return s.id !== socket.id })[0];
       opponent.emit('move', data);
     });
 
     socket.on('attack', function () {
       console.log('attack');
       // do something
-      var opponent = sockets.filter(function (s) { return s.id !== socket.id })[0];
+      var opponent = room.sockets.filter(function (s) { return s.id !== socket.id })[0];
       opponent.emit('attack');
     });
 
@@ -85,16 +107,18 @@ io.sockets.on('connection', function (socket) {
       console.log('attacked');
       console.log(data);
       // do something
-      var opponent = sockets.filter(function (s) { return s.id !== socket.id })[0];
+      var opponent = room.sockets.filter(function (s) { return s.id !== socket.id })[0];
       opponent.emit('attacked', data);
     });
 
     socket.on('disconnect', function () {
       console.log('disconnect');
-      sockets = sockets.filter(function (s) { return socket.id !== s.id });
+      room.sockets = room.sockets.filter(function (s) { return socket.id !== s.id });
+      rooms = rooms.filter(function (r) { return r.id !== room.id });
+      rooms.push(room);
     });
 
-    sockets.push(socket);
+    room.sockets.push(socket);
   });
 });
 

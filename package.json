@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "express": "3.3.5",
-    "express-handlebars": "^1.0.3",
+    "hogan-middleware": "*",
     "node-uuid": "^1.4.1",
     "socket.io": "^1.1.0"
   },
