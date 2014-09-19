@@ -1,0 +1,7 @@
+{
+  "name": "Battle 2048",
+  "description": "Play 2048 against an opponent",
+  "repository": "https://github.com/jonjonsonjr/battle2048",
+  "logo": "https://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["node", "express", "2048"]
+}
